@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import './Email_style.css';
+import sendEmail from './sending.js';
 
 const { textGenTextOnlyPromptStreaming } = require("./gemini.js");
-
-
 
 
 const EmailGenerator = () => {
@@ -51,32 +50,24 @@ const EmailGenerator = () => {
         return;
       }
 
-      const response = await fetch('/api/emails/send', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          fromEmail,
-          toEmail,
-          emailContent: editableEmail
-        })
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to send email');
+
+
+      const response = await sendEmail(fromEmail, toEmail, editableEmail);
+      console.log("RESPONSE:"+response);
+      if (response.includes("Email sent successfully")) {
+        alert("Email sent successfully!");
+        // Reset form after successful send
+        setFromEmail("");
+        setToEmail("");
+        setPrompt("");
+        setGeneratedEmail("");
+        setEditableEmail("");
+      } else {
+        setError(error.message || 'Failed to send email');
       }
 
-      const result = await response.json();
-      if (result.success) {
-        alert('Email sent successfully!');
-        // Reset form after successful send
-        setFromEmail('');
-        setToEmail('');
-        setPrompt('');
-        setGeneratedEmail('');
-        setEditableEmail('');
-      }
+      
+    
     } catch (error) {
       console.error('Error sending email:', error);
       setError(error.message || 'Failed to send email');
