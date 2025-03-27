@@ -18,21 +18,23 @@ const EmailGenerator = () => {
     try {
       // Reset previous errors
       setError(null);
-
+      let prompt2="Genertae mail regarding this : "
+      prompt2=prompt2+prompt;
       // Validate inputs
-      if (!prompt) {
+      if (!prompt2) {
         setError('Please enter a prompt for email generation');
         return;
       }
 
-      const response = await textGenTextOnlyPromptStreaming(prompt);
+      const response = await textGenTextOnlyPromptStreaming(prompt2);
       
-      if (!response.ok) {
-        throw new Error('Failed to generate email');
-      }
+      
+      // if (!response.ok) {
+      //   throw new Error('Failed to generate email');
+      // }
 
-      const data = await response.json();
-      const email = data.email;
+      const data = response;
+      const email = data;
       setGeneratedEmail(email);
       setEditableEmail(email);
     } catch (error) {

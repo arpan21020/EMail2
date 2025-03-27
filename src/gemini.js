@@ -4,6 +4,7 @@ const API_KEY = "AIzaSyDzGfnmfG-w8pWyGtmXZlt-0_QCy1Q-PYI";
 
 async function textGenTextOnlyPromptStreaming(prompt) {
     try {
+        console.log("calling function");
         const genAI = new GoogleGenerativeAI(API_KEY);
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
@@ -17,6 +18,7 @@ async function textGenTextOnlyPromptStreaming(prompt) {
             fullResponse += chunk.text();
         }
 
+        console.log(fullResponse);
         return fullResponse; // Return the final response
     } catch (error) {
         console.error("Error generating content:", error);
